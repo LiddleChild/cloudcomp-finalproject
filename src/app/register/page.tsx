@@ -9,14 +9,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { registerSchema } from "../libs/schemas/register";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Register } from "../libs/types/auth";
-import { register } from "../libs/apis/auth";
 import toast from "react-hot-toast";
+import { Register } from "@/lib/types/auth";
+import { registerSchema } from "@/lib/schemas/register";
+import { register } from "@/lib/apis/auth";
 
 export default function RegisterPage() {
   const form = useForm<Register>({

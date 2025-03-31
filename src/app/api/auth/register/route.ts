@@ -1,6 +1,6 @@
-import { dbclient } from "@/app/libs/clients/db";
-import { Register } from "@/app/libs/types/auth";
-import { MessageResponse } from "@/app/libs/types/common";
+import { dbclient } from "@/lib/clients/db";
+import { Register } from "@/lib/types/auth";
+import { MessageResponse } from "@/lib/types/common";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
