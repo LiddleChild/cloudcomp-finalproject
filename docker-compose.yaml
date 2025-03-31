@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: stnet-database
+    environment:
+      - POSTGRES_PASSWORD=123456
+      - TZ=Asia/Bangkok
+    ports:
+      - 5432:5432
+    volumes:
+      - ./migrations/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d postgres'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - stnet
+
+  app:
+    image: st-app
+    container_name: stnet-app
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=
+      - DB_URL=postgres://postgres:123456@stnet-database:5432/postgres
+    networks:
+      - stnet
+
+networks:
+  stnet: {}
