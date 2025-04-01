@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { Register } from "@/lib/types/auth";
-import { registerSchema } from "@/lib/schemas/register";
+import { registerSchema } from "@/lib/schemas/auth";
 import { register } from "@/lib/apis/auth";
 
 export default function RegisterPage() {
