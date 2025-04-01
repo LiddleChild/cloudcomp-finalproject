@@ -28,9 +28,9 @@ services:
       db:
         condition: service_healthy
     environment:
-      - NEXTAUTH_URL=http://localhost:3000
-      - NEXTAUTH_SECRET=
       - DB_URL=postgres://postgres:123456@stnet-database:5432/postgres
+    env_file:
+      - ".env"
     networks:
       - stnet
 
