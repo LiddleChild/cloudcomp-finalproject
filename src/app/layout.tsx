@@ -21,13 +21,13 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body
-        className={`${notoSansThai.className} flex flex-col w-screen h-screen bg-ci-cream antialiased`}
-      >
-        <NextAuthProvider session={nextAuthSession}>
-          {children}
-          <Toaster />
-        </NextAuthProvider>
+      <body className={`${notoSansThai.className} antialiased`}>
+        <div className="flex flex-col w-screen h-screen bg-ci-cream">
+          <NextAuthProvider session={nextAuthSession}>
+            {children}
+            <Toaster />
+          </NextAuthProvider>
+        </div>
       </body>
     </html>
   );
