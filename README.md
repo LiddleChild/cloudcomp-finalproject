@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Spirit Together
 
-## Getting Started
+### Development
 
-First, run the development server:
+- pnpm
+
+- Fill out secrets in `.env`
+
+- To start / stop local database server
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker compose -f docker-compose.db.yaml up
+docker compose -f docker-compose.db.yaml down
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Database credentials
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+  | Credentials | Value      |
+  | ----------- | ---------- |
+  | user        | `postgres` |
+  | password    | `123456`   |
+  | database    | `postgres` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Database schema is at `migrations/schema.sql`.
+  Postgres will automatically load this file on start and _only_ on start.
 
-## Learn More
+- To start / stop whole app. This will build the app and run together with database.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+docker compose up
+docker compose down
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> **Note:** Make sure the app can be built with `pnpm run build`
