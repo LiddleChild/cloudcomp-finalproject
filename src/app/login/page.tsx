@@ -13,23 +13,34 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Login } from "@/lib/types/auth";
+import { loginSchema } from "@/lib/schemas/auth";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import { Register } from "@/lib/types/auth";
-import { registerSchema } from "@/lib/schemas/auth";
-import { register } from "@/lib/apis/auth";
 import { useRouter } from "next/navigation";
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const router = useRouter();
 
-  const form = useForm<Register>({
-    resolver: zodResolver(registerSchema),
+  const [error, setError] = useState<string | undefined>();
+  const form = useForm<Login>({
+    resolver: zodResolver(loginSchema),
   });
 
-  const submitHandler = async (data: Register) => {
-    register(data)
-      .then(() => {
-        toast.success("Registration successful!");
+  const submitHandler = async (data: Login) => {
+    signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    })
+      .then((resp) => {
+        if (resp?.error) {
+          setError(resp?.error || undefined);
+          return;
+        }
+
+        toast.success("Login successful!");
         router.push("/");
       })
       .catch((err) => {
@@ -45,21 +56,8 @@ export default function RegisterPage() {
           onSubmit={form.handleSubmit(submitHandler)}
           className="bg-white rounded-xl p-8 flex flex-col gap-12 w-full max-w-[450px]"
         >
-          <div className="text-4xl font-semibold">Register</div>
+          <div className="text-4xl font-semibold">Login</div>
           <div className="flex flex-col gap-4">
-            <FormField
-              control={form.control}
-              name="displayName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Display Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="johndoelnwza" {...field} />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="email"
@@ -86,21 +84,9 @@ export default function RegisterPage() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="********" {...field} />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
-            />
+            <FormMessage>{error}</FormMessage>
           </div>
-          <Button className="bg-ci-orange hover:bg-ci-orange/85">Register</Button>
+          <Button className="bg-ci-orange hover:bg-ci-orange/85">Login</Button>
         </form>
       </Form>
     </div>

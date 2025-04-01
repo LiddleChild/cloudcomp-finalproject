@@ -1,4 +1,5 @@
 import { z } from "zod";
-import { registerSchema } from "../schemas/register";
+import { loginSchema, registerSchema } from "../schemas/auth";
 
 export type Register = z.infer<typeof registerSchema>;
+export type Login = z.infer<typeof loginSchema>;

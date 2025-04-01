@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Noto_Sans_Thai } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import NextAuthProvider from "../components/providers/NextAuthProvider";
+import { getSession } from "../lib/auth/auth-config";
 
 const notoSansThai = Noto_Sans_Thai({ subsets: [] });
 
@@ -15,13 +17,17 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nextAuthSession = await getSession();
+
   return (
     <html lang="en">
       <body
         className={`${notoSansThai.className} flex flex-col w-screen h-screen bg-ci-cream antialiased`}
       >
-        {children}
-        <Toaster />
+        <NextAuthProvider session={nextAuthSession}>
+          {children}
+          <Toaster />
+        </NextAuthProvider>
       </body>
     </html>
   );

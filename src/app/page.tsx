@@ -1,18 +1,31 @@
 "use client";
 
-import toast from "react-hot-toast";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Home() {
-  const buttonHandler = () => {
-    toast.error("Hey, leave me alone");
-  };
+  const session = useSession();
 
   return (
     <div>
-      <div className="text-xl font-semibold">Hi</div>
-      <button onClick={buttonHandler} className="bg-green-600 rounded-lg p-2">
-        Dont your dare to touch me
-      </button>
+      <div className="text-xl font-semibold">
+        {!!session.data ? `Hi, I'm ${session.data.user.display_name}` : "Hi"}
+      </div>
+      <div className="flex gap-4">
+        {!!session.data ? (
+          <button onClick={() => signOut()} className="bg-white p-2">
+            Logout
+          </button>
+        ) : (
+          <>
+            <a href="/login" className="bg-white p-2">
+              Login
+            </a>
+            <a href="/register" className="bg-white p-2">
+              Register
+            </a>
+          </>
+        )}
+      </div>
     </div>
   );
 }
