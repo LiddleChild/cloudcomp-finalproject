@@ -41,7 +41,7 @@ export default function LoginPage() {
         }
 
         toast.success("Login successful!");
-        router.push("/");
+        router.push("/topics");
       })
       .catch((err) => {
         console.error(err);

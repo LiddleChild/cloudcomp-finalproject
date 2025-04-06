@@ -1,5 +1,5 @@
 import { dbclient } from '@/lib/clients/db'
-import { MessageResponse } from '@/lib/types/common'
+import { DataResponse, MessageResponse } from '@/lib/types/common'
 import { NextRequest, NextResponse } from 'next/server'
 import { Topic } from '@/lib/types/topics'
 
@@ -18,6 +18,22 @@ export async function POST(req: NextRequest) {
 		}
 
 		return NextResponse.json(resp, { status: 201 })
+	} catch (err) {
+		console.error(err)
+		return NextResponse.json({ message: err }, { status: 500 })
+	}
+}
+
+export async function GET() {
+	try {
+		const topics = await dbclient.query('SELECT * FROM topics')
+
+		const resp: DataResponse<Topic[]> = {
+			message: 'success',
+			data: topics.rows,
+		}
+
+		return NextResponse.json(resp, { status: 200 })
 	} catch (err) {
 		console.error(err)
 		return NextResponse.json({ message: err }, { status: 500 })
